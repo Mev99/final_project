@@ -1,17 +1,37 @@
 import Express from "express";
 import mongoose from "mongoose";
+import {engine} from "express-handlebars"
+//CONFIG & UTILS
+import __dirname from "./utils.js";
+import config from "./config/config.js"
+//ROUTERs
 import userRouter from "./router/users.router.js"
 import productRouter from "./router/product.router.js";
 import cartRouter from "./router/cart.router.js";
 
-const app = Express()
-app.use(Express.json())
 
-app.listen(8080, () => {
-    console.log(`listening on what ever port you choose homie`)
+const app = Express()
+const mongoURL = config.mongoUrl
+const PORT = config.port
+
+app.engine(
+    "handlebars",
+    engine({
+        extname: "handlebars",
+        defaultLayout: false,
+        layoutsDir: "views/layouts/"
+    })
+);
+app.set("view engine", "handlebars")
+app.set("views", __dirname + '/views')
+app.use(Express.json())
+app.use(Express.urlencoded({ extended: true }))
+
+app.listen(PORT, () => {
+    console.log(`at port: ${PORT}`)
 })
 
-mongoose.connect("mongodb+srv://Mev:1972@cluster0.kxayelo.mongodb.net/ecommerce?retryWrites=true&w=majority")
+mongoose.connect(mongoURL)
     .then(() => {
         console.log('connected to DB')
     })

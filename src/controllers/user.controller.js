@@ -1,6 +1,9 @@
+import User from "../dao/mongo/user.mongo.js"
+
+const userMongo = new User()
 async function getAllUsers(req, res) {
     try {
-        let users = await userModel.find()
+        let users =  await userMongo.get()
         res.send({ result: 'success', payload: users })
     } catch (error) {
         console.error(error)
@@ -9,23 +12,9 @@ async function getAllUsers(req, res) {
 
 async function getUser(req, res) {
     try {
-        let paramId = req.params
-        let searchById = await userModel.find({ userId: paramId.uid })
+        let paramId = req.params.uid
+        let searchById = await userMongo.getById(paramId)
         res.send({ payload: searchById })
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-async function postUser(req, res) {
-    try {
-        let { name, email, userId } = req.body
-
-        let information = [{ name, email, userId }]
-
-        let result = await userModel.create(information)
-
-        res.send({ result: "success", payload: result })
     } catch (error) {
         console.error(error)
     }
@@ -34,8 +23,8 @@ async function postUser(req, res) {
 async function putUser(req, res) {
     try {
         let paramId = req.params
-        const findDocument = await userModel.findOne({ userId: paramId.uid })
-
+        const findDocument = await User.get({ userId: paramId.uid })
+//findOne
         if (findDocument === null) {
             return res.send("user's ID not found")
         }
@@ -63,7 +52,6 @@ async function deleteUser(req, res) {
 export default {
     getAllUsers,
     getUser,
-    postUser,
     putUser,
     deleteUser
 }

@@ -1,11 +1,23 @@
 import mongoose, { Schema } from "mongoose";
+import mongooseAutoPopulate from "mongoose-autopopulate";
+import { paginate } from "mongoose-paginate-v2";
 
 const userSchema = new Schema({
-    name: String,
+    first_name: String,
+    last_name: String,
     email: String,
-    userId: String
+    age: Number,
+    password: String,
+    cart: {
+        type: Schema.Types.ObjectId,
+        ref: 'Carts'
+    },
+    role: String
+
 })
 
-const userModel = mongoose.model('users', userSchema)
+userSchema.plugin(mongooseAutoPopulate)
+// userSchema.plugin(paginate)
+const userModel = mongoose.model('user', userSchema)
 
 export default userModel

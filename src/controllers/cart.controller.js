@@ -1,35 +1,22 @@
-import cartModel from "../dao/mongo/models/cart.model.js"
+import Cart from "../dao/classes/cart.mongo.js"
+
+const cartService = new Cart()
 
 async function getCart(req, res) {
     try {
-        let data = await cartModel.find()
-        res.send({ result: 'success', payload: { data } })
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-async function postProductAndCreateCart(req, res) {
-    try {
-        const paramId = req.params.pid
-        const addProductToCart = await cartModel.create({
-            products: { product: paramId, quantity: 1 }
-        })
-        console.log(addProductToCart)
-
-        res.send({ result: "success", payload: { addProductToCart } })
-
+        let cartId = req.params.cid
+        let cart = await cartService.get(cartId)
+        res.send({ result: 'success', payload: { cart } })
     } catch (error) {
         console.error(error)
     }
 }
 
 async function deleteProductFromCart(req, res) {
+    const cartId = req.params.cid
+    const productId = req.params.pid
     try {
-        const cartId = req.params.cid
-        const productId = req.params.pid
-
-        const updateCart = await cartModel.updateOne({ _id: cartId }, { $pull: { products: { product: productId } } })
+        const updateCart = await cartService.deleteProduct(cartId, productId)
 
         res.send({ payload: updateCart })
     } catch (error) {
@@ -38,10 +25,9 @@ async function deleteProductFromCart(req, res) {
 }
 
 async function deleteAllProductsFromCart(req, res) {
+    const cartId = req.params.cid
     try {
-        const cartId = req.params.cid
-
-        const deleteAllCart = await cartModel.updateMany({ _id: cartId }, { $set: { products: [] } })
+        const deleteAllCart = await cartService.clearCart(cartId)
 
         res.send({ payload: { deleteAllCart } })
     } catch (error) {
@@ -49,15 +35,13 @@ async function deleteAllProductsFromCart(req, res) {
     }
 }
 
-async function putProductToCart(req, res) {
+async function addProductToCart(req, res) {
     try {
         const cartId = req.params.cid
         const productId = req.params.pid
         const quantityDesired = req.body | 1
-        console.log(quantityDesired)
 
-
-        const addProduct = await cartModel.findByIdAndUpdate({ _id: cartId }, { $push: { products: { product: productId, quantity: quantityDesired } } })
+        const addProduct = await cartService.put(cartId, productId, quantityDesired)
 
         res.send({ payload: addProduct })
 
@@ -70,10 +54,9 @@ async function putProductQuantity(req, res) {
     const cartId = req.params.cid
     const productId = req.params.pid
     const bodyData = req.body
-    const itemQuantity = Object.values(bodyData)
 
     try {
-        const result = await cartModel.findOneAndUpdate({ _id: cartId, "products.product": productId }, { $set: { "products.$.quantity": itemQuantity[0] } })
+        const result = await cartService.putQuantity(cartId, productId, bodyData)
 
         res.send({ payload: result })
     } catch (error) {
@@ -83,9 +66,8 @@ async function putProductQuantity(req, res) {
 
 export default {
     getCart,
-    postProductAndCreateCart,
     deleteProductFromCart,
     deleteAllProductsFromCart,
-    putProductToCart,
+    addProductToCart,
     putProductQuantity
 }

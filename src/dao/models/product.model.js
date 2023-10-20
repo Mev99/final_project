@@ -2,9 +2,9 @@ import { Schema, model } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 const stockSchema = new Schema({
-        stock_available: Boolean,
-        stock_ammount: Number
-}, {_id: false})
+    stock_available: Boolean,
+    stock_ammount: Number
+}, { _id: false })
 
 const productSchema = new Schema({
     product: String,

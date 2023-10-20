@@ -46,7 +46,7 @@ mongoose.connect(mongoURL)
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://Mev:1972@cluster0.kxayelo.mongodb.net/ecommerce?retryWrites=true&w=majority',
+        mongoUrl: mongoURL,
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
         ttl: 600,
     }),

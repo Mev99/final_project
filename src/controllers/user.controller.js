@@ -1,9 +1,9 @@
-import User from "../dao/mongo/user.mongo.js"
+import User from "../dao/classes/user.mongo.js"
 
-const userMongo = new User()
+const userService = new User()
 async function getAllUsers(req, res) {
     try {
-        let users =  await userMongo.get()
+        let users = await userService.get()
         res.send({ result: 'success', payload: users })
     } catch (error) {
         console.error(error)
@@ -13,7 +13,7 @@ async function getAllUsers(req, res) {
 async function getUser(req, res) {
     try {
         let paramId = req.params.uid
-        let searchById = await userMongo.getById(paramId)
+        let searchById = await userService.getById(paramId)
         res.send({ payload: searchById })
     } catch (error) {
         console.error(error)
@@ -22,16 +22,10 @@ async function getUser(req, res) {
 
 async function putUser(req, res) {
     try {
-        let paramId = req.params
-        const findDocument = await User.get({ userId: paramId.uid })
-//findOne
-        if (findDocument === null) {
-            return res.send("user's ID not found")
-        }
-
+        let userId = req.params.uid
         let newUserInfo = req.body
-        let update = await findDocument.updateOne(newUserInfo)
 
+        let update = await userService.put(userId, newUserInfo)
         res.send({ result: "success on updating", payload: update })
     } catch (error) {
         console.error(error)
@@ -40,10 +34,10 @@ async function putUser(req, res) {
 
 async function deleteUser(req, res) {
     try {
-        let paramId = req.params
-        let deleteUser = await userModel.deleteOne({ userId: paramId.uid })
+        let userId = req.params.uid
+        let deleteUser = await userService.delete(userId)
 
-        res.send({ result: "success", message: `deleted user with the following ID: ${paramId.uid}`, payload: deleteUser })
+        res.send({ result: "success", message: `deleted user with the following ID: ${userId}`, payload: deleteUser })
     } catch (error) {
         console.error(error)
     }

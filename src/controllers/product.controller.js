@@ -1,4 +1,6 @@
-import productModel from "../dao/mongo/models/product.model.js"
+import Products from "../dao/classes/product.mongo.js"
+
+const productService = new Products()
 
 async function getProducts(req, res) {
     try {
@@ -6,9 +8,9 @@ async function getProducts(req, res) {
         let pageParam = req.params.page || 1
         let sortParam = req.params.sort || 0
         let queryUrl = req.query || null
-    
-        const findProducts = await productModel.paginate(queryUrl, { limit: limitParam, page: pageParam, sort: { price: sortParam } })
-    
+
+        const findProducts = await productService.get(queryUrl, limitParam, pageParam, sortParam)
+
         res.send({ status: 'success', payload: findProducts })
     } catch (error) {
         console.log(error)
@@ -21,7 +23,7 @@ async function updateMany(req, res) {
         const queryId = req.query
         const data = req.body
 
-        const updateAll = await productModel.updateMany(queryId, data)
+        const updateAll = await productService.put(queryId, data)
 
         res.send({ result: "success", payload: updateAll })
     } catch (error) {
@@ -29,4 +31,4 @@ async function updateMany(req, res) {
     }
 }
 
-export default {getProducts, updateMany}
+export default { getProducts, updateMany }

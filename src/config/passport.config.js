@@ -1,7 +1,7 @@
 import passport from "passport";
 import local from "passport-local"
-import UserModel from "../dao/mongo/models/user.model.js";
-import CartModel from "../dao/mongo/models/cart.model.js";
+import UserModel from "../dao/models/user.model.js";
+import CartModel from "../dao/models/cart.model.js";
 import { createHash, isValidatePassword } from "../utils.js"
 
 const localStrategy = local.Strategy
@@ -15,8 +15,7 @@ const initializePassport = () => {
                 const { first_name, last_name, email, age } = req.body;
                 try {
                     let user = await UserModel.findOne({ email: username });
-                    let cartTest = await CartModel.create({})
-                    console.log(cartTest)
+                    let createCart = await CartModel.create({})
                     if (user) {
                         console.log("El usuario ya existe");
                         return done(null, false);
@@ -33,7 +32,7 @@ const initializePassport = () => {
                         email,
                         age,
                         password: createHash(password),
-                        cart: cartTest._id,
+                        cart: createCart._id,
                         role: "user"
                     };
                     let result = await UserModel.create(newUser);
@@ -58,15 +57,18 @@ passport.deserializeUser(async (id, done) => {
 passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
     try {
         const user = await UserModel.findOne({ email: username });
+
         if (!user) {
             return done(null, false);
         }
 
         if (!isValidatePassword(user.password, password)) {
+            console.log('password does not check')
             return done(null, false);
         }
 
         return done(null, user);
+
     } catch (error) {
         return done(error);
     }

@@ -43,9 +43,19 @@ async function deleteUser(req, res) {
     }
 }
 
+async function getCurrent(req, res) {
+    try {
+        const { first_name, last_name, email, age } = req.session.user
+        res.render('user', { first_name, last_name, email, age })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 export default {
     getAllUsers,
     getUser,
     putUser,
-    deleteUser
+    deleteUser,
+    getCurrent
 }

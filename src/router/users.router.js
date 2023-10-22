@@ -50,10 +50,12 @@ userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/us
 //USER 
 userRouter.get('/', userController.getAllUsers)
 
-userRouter.get('/:uid', userController.getUser)
+// userRouter.get('/:uid', userController.getUser)
 
 userRouter.put("/:uid", userController.putUser)
 
 userRouter.delete("/:uid", userController.deleteUser)
+
+userRouter.get("/current", userController.getCurrent)
 
 export default userRouter

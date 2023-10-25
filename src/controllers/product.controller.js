@@ -11,7 +11,10 @@ async function getProducts(req, res) {
 
         const findProducts = await productService.get(queryUrl, limitParam, pageParam, sortParam)
 
-        res.send({ status: 'success', payload: findProducts })
+        console.log(findProducts)
+
+        // res.send({ payload: findProducts})
+        res.render('products', { findProducts })
     } catch (error) {
         console.log(error)
     }

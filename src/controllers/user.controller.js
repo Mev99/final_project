@@ -1,6 +1,61 @@
-import User from "../dao/classes/user.mongo.js"
+import { userService } from "../repository/app.js"
+// import User from "../dao/classes/user.mongo.js"
+// const userService = new User()
 
-const userService = new User()
+// LOGIN
+async function getLogin(req, res) {
+    try {
+        res.render('login')
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function postLogin(req, res) {
+    try {
+        if (!req.session.passport.user) {
+            return res.status(400).send("Usuario no encontrado")
+        }
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            age: req.user.age
+        }
+        res.redirect('http://localhost:8080/user/current')
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+// REGISTER
+async function getRegister(req, res) {
+    try {
+        res.render('register')
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function postRegister(req, res) {
+    try {
+        const { first_name, last_name, email, age, password } = req.body
+        console.log(req.body)
+
+        if (!first_name || !last_name || !email || !age || !password) {
+            return res.status(400).send('missing information');
+        }
+
+
+        // res.write({payload: createUser})
+        res.redirect("http://localhost:8080/user/login")
+        // res.send({ status: "success", payload: createUser });
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+// USER
 async function getAllUsers(req, res) {
     try {
         let users = await userService.get()
@@ -57,5 +112,11 @@ export default {
     getUser,
     putUser,
     deleteUser,
-    getCurrent
+    getCurrent,
+
+    getLogin,
+    postLogin,
+    
+    getRegister,
+    postRegister
 }

@@ -7,5 +7,8 @@ productRouter.get("/:limit?/:page?/:sort?/:query?", productController.getProduct
 
 productRouter.put('/:uid?', productController.updateMany)
 
+productRouter.post('/', productController.postProduct)
+
+productRouter.delete('/:pid', productController.deleteProduct)
 
 export default productRouter

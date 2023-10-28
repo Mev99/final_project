@@ -1,11 +1,14 @@
-import productModel from "../models/product.model.js"
+import ProductDto from "../dao/DTOs/product.dto.js";
 
-export default class Products {
-    
+export default class ProductRepository {
+    constructor(dao) {
+        this.dao = dao
+    }
+
     get = async (query, limitParam, pageParam, sortParam) => {
         try {
-            let paginateProducts = await productModel.paginate(query, { limit: limitParam, page: pageParam, sort: { price: sortParam } })
-            return paginateProducts
+            let result = await this.dao.get(query, limitParam, pageParam, sortParam)
+            return result
         } catch (error) {
             console.error(error)
         }
@@ -13,7 +16,7 @@ export default class Products {
 
     put = async (queryId, data) => {
         try {
-            let update = await productModel.updateMany(queryId, data)
+            let update = await this.dao.put(queryId, data)
             return update
         } catch (error) {
             console.error(error)
@@ -22,7 +25,7 @@ export default class Products {
 
     post = async (data) => {
         try {
-            let newProduct = await productModel.create(data)
+            let newProduct = await this.dao.post(data)
             return newProduct
         } catch (error) {
             console.error(error)
@@ -31,7 +34,7 @@ export default class Products {
 
     delete = async (productId) => {
         try {
-            let deleteProduct = await productModel.deleteOne(productId)
+            let deleteProduct = await this.dao.delete(productId)
             return deleteProduct
         } catch (error) {
             console.error(error)

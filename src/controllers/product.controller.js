@@ -1,6 +1,6 @@
-import Products from "../dao/classes/product.mongo.js"
-
-const productService = new Products()
+import { productService } from "../repository/app.js"
+// import Products from "../dao/classes/product.mongo.js"
+// const productService = new Products()
 
 async function getProducts(req, res) {
     try {
@@ -34,4 +34,27 @@ async function updateMany(req, res) {
     }
 }
 
-export default { getProducts, updateMany }
+
+async function postProduct(req, res) {
+    try {
+        const data = req.body
+        const newProduct = await productService.post(data)
+
+        res.send({payload: newProduct})
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function deleteProduct(req, res) {
+    try {
+        const productId = req.params.pid
+        const deleteProduct = await productService.delete(productId)
+
+        res.send({payload: deleteProduct})
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export default { getProducts, updateMany, postProduct, deleteProduct }

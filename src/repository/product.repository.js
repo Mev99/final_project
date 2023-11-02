@@ -25,7 +25,8 @@ export default class ProductRepository {
 
     post = async (data) => {
         try {
-            let newProduct = await this.dao.post(data)
+            const productDTO = new ProductDto(data)
+            let newProduct = await this.dao.post(productDTO)
             return newProduct
         } catch (error) {
             console.error(error)

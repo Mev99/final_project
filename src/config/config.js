@@ -5,5 +5,5 @@ dotenv.config()
 export default {
     port: process.env.PORT,
     mongoUrl: process.env.MONGO,
-    persistence: process.env.PERSISTENCE
+    secret: process.env.SESSION_SECRET
 }

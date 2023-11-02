@@ -1,4 +1,5 @@
 import { userService } from "../repository/app.js"
+import UserDto from "../dao/DTOs/user.dto.js"
 // import User from "../dao/classes/user.mongo.js"
 // const userService = new User()
 
@@ -14,15 +15,20 @@ async function getLogin(req, res) {
 async function postLogin(req, res) {
     try {
         if (!req.session.passport.user) {
-            return res.status(400).send("Usuario no encontrado")
+            console.log('user', req.session.passport.user)
+            return res.status(400).send("User not found")
         }
+
         req.session.user = {
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,
-            age: req.user.age
+            age: req.user.age,
+            role: req.user.role
         }
-        res.redirect('http://localhost:8080/user/current')
+
+        res.send({status: 'success'})
+        // res.redirect('http://localhost:8080/user/current')
     } catch (error) {
         console.error(error)
     }
@@ -48,8 +54,8 @@ async function postRegister(req, res) {
 
 
         // res.write({payload: createUser})
-        res.redirect("http://localhost:8080/user/login")
-        // res.send({ status: "success", payload: createUser });
+        // res.redirect("http://localhost:8080/user/login")
+        res.send({ status: "success" });
     } catch (error) {
         console.error(error)
     }
@@ -100,8 +106,8 @@ async function deleteUser(req, res) {
 
 async function getCurrent(req, res) {
     try {
-        const { first_name, last_name, email, age } = req.session.user
-        res.render('user', { first_name, last_name, email, age })
+        const userDTO = new UserDto(req.user)
+        res.render('current', userDTO)
     } catch (error) {
         console.error(error)
     }

@@ -43,35 +43,37 @@ const initializePassport = () => {
             }
         )
     )
+
+    passport.serializeUser((user, done) => {
+        done(null, user._id);
+    });
+    
+    passport.deserializeUser(async (id, done) => {
+        let user = await UserModel.findById(id);
+        done(null, user);
+    });
+    
+    passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
+        try {
+            const user = await UserModel.findOne({ email: username });
+            if (!user) {
+                console.log('user does not check')
+                return done(null, false);
+            }
+            
+            const passwordValidation = isValidatePassword(user.password, password)
+            if (!passwordValidation) {
+                console.log('password does not check')
+                return done(null, false);
+            }
+    
+            return done(null, user);
+    
+        } catch (error) {
+            return done(error);
+        }
+    }))
 }
 
-passport.serializeUser((user, done) => {
-    done(null, user._id);
-});
-
-passport.deserializeUser(async (id, done) => {
-    let user = await UserModel.findById(id);
-    done(null, user);
-});
-
-passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
-    try {
-        const user = await UserModel.findOne({ email: username });
-
-        if (!user) {
-            return done(null, false);
-        }
-
-        if (!isValidatePassword(user.password, password)) {
-            console.log('password does not check')
-            return done(null, false);
-        }
-
-        return done(null, user);
-
-    } catch (error) {
-        return done(error);
-    }
-}))
 
 export default initializePassport

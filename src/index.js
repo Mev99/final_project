@@ -4,6 +4,7 @@ import { engine } from "express-handlebars"
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
+import flash from "connect-flash"
 //CONFIG & UTILS
 import __dirname from "./utils.js";
 import config from "./config/config.js"
@@ -18,6 +19,7 @@ const app = Express()
 
 const mongoURL = config.mongoUrl
 const PORT = config.port
+const secret = config.secret
 
 app.engine(
     "handlebars",
@@ -50,15 +52,16 @@ app.use(session({
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
         ttl: 600,
     }),
-    secret: 'coderSecret',
+    secret: secret,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
 }))
 
 // PASSPORT
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(flash())
 
 //ROUTERS
 app.use('/user', userRouter)

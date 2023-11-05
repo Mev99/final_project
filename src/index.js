@@ -50,7 +50,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: mongoURL,
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 600,
+        ttl: 6000,
     }),
     secret: secret,
     resave: false,

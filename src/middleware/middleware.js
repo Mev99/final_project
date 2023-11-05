@@ -1,3 +1,4 @@
+// * IF NOT ADMIN = 403
 async function authorizationAdmin(req, res, next) {
     try {
         if (req.user.role === 'user') {
@@ -9,6 +10,7 @@ async function authorizationAdmin(req, res, next) {
     }
 }
 
+// * IF NOT USER = 403 
 async function authorizationUser(req, res, next) {
     try {
         if (req.user.role === 'admin') {
@@ -21,6 +23,7 @@ async function authorizationUser(req, res, next) {
     }
 }
 
+// * CHECK IF USER IS AUTHENTICATED
 async function checkAuthenticated(req, res, next) {
     try {
         if (req.isAuthenticated()) {
@@ -32,6 +35,7 @@ async function checkAuthenticated(req, res, next) {
     }
 }
 
+// * IF AUTHENTICATED REDIRECTS TO USER'S PROFILE
 async function checkNotAuthenticated(req, res, next) {
     try {
         if (req.isAuthenticated()) {

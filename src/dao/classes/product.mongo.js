@@ -11,6 +11,14 @@ export default class Products {
         }
     }
 
+    getById = async (uid) => {
+        try {
+            let product = await productModel.findById(uid)
+            return product
+        } catch (error) {
+            console.log(error)
+        }
+    }
     put = async (queryId, data) => {
         try {
             let update = await productModel.updateMany(queryId, data)

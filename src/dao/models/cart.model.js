@@ -13,6 +13,8 @@ const cartSchema = new Schema({
             _id: false
         }]
     }
+    // TODO: MAKE A TOTAL AND MAKE IT UPDATE IN EACH CART REQUEST, USER SHOULD KNOW THE TOTAL ON HIS CART AT ALL TIMES NOT WHEN HE JUST MAKES THE PURCHASE.
+    // cart_total: Number
 })
 cartSchema.plugin(mongooseAutoPopulate)
 const cartModel = model('carts', cartSchema)

@@ -21,9 +21,10 @@ async function getProducts(req, res) {
 
 }
 
+// TODO: Make it so if stocks is added to a product that has none, the boolean changes to true
 async function updateMany(req, res) {
     try {
-        const queryId = req.query
+        const queryId = req.body
         const data = req.body
 
         const updateAll = await productService.put(queryId, data)

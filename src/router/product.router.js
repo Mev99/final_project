@@ -12,7 +12,7 @@ productRouter.get("/:limit?/:page?/:sort?/:query?",
     productController.getProducts)
 
 // * ADMIN ONLY update product
-productRouter.put('/:uid?', auth.checkAuthenticated, auth.authorizationAdmin,
+productRouter.put('/', auth.checkAuthenticated, auth.authorizationAdmin,
     productController.updateMany)
 
 // * ADMIN ONLY create product

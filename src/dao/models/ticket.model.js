@@ -7,6 +7,6 @@ const purchaseSchema = new Schema({
     purchaser: String
 })
 
-const purchaseModel = model('purchase', purchaseSchema)
+const ticketModel = model('tickets', purchaseSchema)
 
-export default purchaseModel
+export default ticketModel

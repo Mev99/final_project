@@ -28,7 +28,7 @@ cartRouter.delete('/:cid', auth.authorizationUser,
     cartController.deleteAllProductsFromCart)
 
 // * PURCHASE
-cartRouter.get('/:cid/purchase', auth.checkAuthenticated, auth.authorizationUser,
-    purchaseController.purchase)
+cartRouter.get('/purchase', auth.checkAuthenticated, auth.authorizationUser,
+    purchaseController.purchase, purchaseController.ticketCreation)
 
 export default cartRouter

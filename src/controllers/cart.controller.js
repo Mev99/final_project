@@ -1,5 +1,4 @@
 import Cart from "../dao/classes/cart.mongo.js"
-
 const cartService = new Cart()
 
 async function getCart(req, res) {
@@ -16,13 +15,10 @@ async function getCart(req, res) {
 async function addProductToCart(req, res) {
     try {
         const cartId = req.user.cart
-        console.log(cartId)
 
         const productId = req.params.pid    
-        console.log(productId)
         
         const quantityDesired = req.body | 1
-        console.log(quantityDesired)
 
         const addProduct = await cartService.put(cartId, productId, quantityDesired)
 

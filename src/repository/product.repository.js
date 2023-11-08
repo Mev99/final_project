@@ -13,6 +13,15 @@ export default class ProductRepository {
             console.error(error)
         }
     }
+    
+    getById = async (uid) => {
+        try {
+            let result = await this.dao.getById(uid)
+            return result
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     put = async (queryId, data) => {
         try {

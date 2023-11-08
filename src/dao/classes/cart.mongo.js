@@ -1,6 +1,7 @@
 import cartModel from '../models/cart.model.js'
 
 export default class Cart {
+    
     get = async (cartId) => {
         try {
             let data = await cartModel.find({ _id: cartId })

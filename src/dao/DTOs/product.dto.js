@@ -3,7 +3,7 @@ export default class ProductDto {
         this.product = product.product,
         this.category = product.category,
         this.price = product.price,
-        this.stock = product.stock,
+        // this.stock = product.stock,
         this.image = product.image
     }
 }

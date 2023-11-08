@@ -29,6 +29,6 @@ cartRouter.delete('/:cid', auth.authorizationUser,
 
 // * PURCHASE
 cartRouter.get('/purchase', auth.checkAuthenticated, auth.authorizationUser,
-    purchaseController.purchase, purchaseController.ticketCreation)
+    purchaseController.purchase, purchaseController.ticketCreation, purchaseController.nodemail)
 
 export default cartRouter

@@ -12,6 +12,10 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Carts'
     },
+    restoreToken: {
+        token: String,
+        expirationTime: Date
+    },
     role: String
 
 })

@@ -13,6 +13,7 @@ import initializePassport from "./config/passport.config.js";
 import userRouter from "./router/users.router.js"
 import productRouter from "./router/product.router.js";
 import cartRouter from "./router/cart.router.js";
+import restoreRouter from './router/restorePass.router.js'
 
 
 const app = Express()
@@ -67,3 +68,4 @@ app.use(flash())
 app.use('/user', userRouter)
 app.use('/products', productRouter)
 app.use('/cart', cartRouter)
+app.use('/restore', restoreRouter)

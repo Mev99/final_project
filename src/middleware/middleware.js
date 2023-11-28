@@ -1,3 +1,5 @@
+import { userService } from "../repository/app.js"
+
 // * IF NOT ADMIN = 403
 async function authorizationAdmin(req, res, next) {
     try {
@@ -47,9 +49,24 @@ async function checkNotAuthenticated(req, res, next) {
     }
 }
 
+export async function verifyToken(req, res, next) {
+    const queryToken = req.params.token
+    const userTokenData = await userService.getByToken(queryToken)
+    const token = userTokenData.restoreToken.token
+    const expirationTime = userTokenData.restoreToken.expirationTime
+
+    if (queryToken === token && expirationTime > Date.now()) {
+        return next()
+    } else {
+        return res.render('forbidden')
+
+    }
+}
+
 export default {
     authorizationAdmin,
     authorizationUser,
     checkAuthenticated,
-    checkNotAuthenticated
+    checkNotAuthenticated,
+    verifyToken
 }

@@ -1,4 +1,5 @@
 import Randomstring from "randomstring"
+// TODO: use nodemailer.config
 import nodemailer from "nodemailer"
 
 import { productService } from "../repository/app.js"
@@ -9,7 +10,7 @@ import ProductDto from "../dao/DTOs/product.dto.js"
 
 import Ticket from "../dao/classes/ticket.mongo.js"
 const ticketService = new Ticket()
-
+// TODO: use nodemailer.config
 const transport = nodemailer.createTransport({
     service: 'gmail',
     port: 587,

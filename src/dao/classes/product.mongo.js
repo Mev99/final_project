@@ -19,6 +19,7 @@ export default class Products {
             console.log(error)
         }
     }
+    
     put = async (queryId, data) => {
         try {
             let update = await productModel.updateMany(queryId, data)

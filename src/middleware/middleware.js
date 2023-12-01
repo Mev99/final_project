@@ -1,4 +1,4 @@
-import { userService } from "../repository/app.js"
+import { restorePassService } from "../repository/app.js"
 
 // * IF NOT ADMIN = 403
 async function authorizationAdmin(req, res, next) {
@@ -51,7 +51,7 @@ async function checkNotAuthenticated(req, res, next) {
 
 export async function verifyToken(req, res, next) {
     const queryToken = req.params.token
-    const userTokenData = await userService.getByToken(queryToken)
+    const userTokenData = await restorePassService.getByToken(queryToken)
     const token = userTokenData.restoreToken.token
     const expirationTime = userTokenData.restoreToken.expirationTime
 

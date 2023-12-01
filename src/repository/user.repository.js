@@ -23,15 +23,6 @@ export default class UserRepository {
         }
     }
 
-    getByToken = async (userToken) => {
-        try {
-            let token = await this.dao.getByToken(userToken)
-            return token
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     put = async (userId, newUserInfo) => {
         try {
             let result = await this.dao.put(userId, newUserInfo)

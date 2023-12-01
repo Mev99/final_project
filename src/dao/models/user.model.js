@@ -16,7 +16,10 @@ const userSchema = new Schema({
         token: String,
         expirationTime: Date
     },
-    role: String
+    role: {
+        type: String,
+        default: "user"
+    }
 
 })
 

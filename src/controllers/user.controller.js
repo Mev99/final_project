@@ -1,9 +1,7 @@
 import { userService } from "../repository/app.js"
 import UserDto from "../dao/DTOs/user.dto.js"
-// import User from "../dao/classes/user.mongo.js"
-// const userService = new User()
 
-// LOGIN
+// *LOGIN
 async function getLogin(req, res) {
     try {
         res.render('login')
@@ -34,7 +32,7 @@ async function postLogin(req, res) {
     }
 }
 
-// REGISTER
+// *REGISTER
 async function getRegister(req, res) {
     try {
         res.render('register')
@@ -61,7 +59,7 @@ async function postRegister(req, res) {
     }
 }
 
-// USER
+// *USER
 async function getAllUsers(req, res) {
     try {
         let users = await userService.get()

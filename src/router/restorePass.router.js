@@ -6,10 +6,13 @@ import auth from '../middleware/middleware.js'
 
 const restoreRouter = Router()
 
-restoreRouter.get('/', auth.checkAuthenticated, restorePass.sendEmail)
+restoreRouter.get('/', auth.checkAuthenticated,
+    restorePass.sendEmail)
 
-restoreRouter.get('/:token', auth.checkAuthenticated, auth.verifyToken, restorePass.getRestore)
+restoreRouter.get('/:token', auth.checkAuthenticated, auth.verifyToken,
+    restorePass.getRestore)
 
-restoreRouter.post('/:token', auth.checkAuthenticated, restorePass.postRestore)
+restoreRouter.post('/:token', auth.checkAuthenticated, auth.verifyToken,
+    restorePass.postRestore)
 
 export default restoreRouter

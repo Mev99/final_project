@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongooseAutoPopulate from "mongoose-autopopulate";
 import paginate from "mongoose-paginate-v2";
 
 const stockSchema = new Schema({
@@ -11,8 +12,15 @@ const productSchema = new Schema({
     category: String,
     price: Number,
     stock: stockSchema,
-    image: [Schema.Types.String]
+    image: [Schema.Types.String],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        default: 'admin',
+        autopopulate: true
+    }
 })
+productSchema.plugin(mongooseAutoPopulate)
 productSchema.plugin(paginate)
 const productModel = model('product', productSchema)
 

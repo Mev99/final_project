@@ -39,9 +39,15 @@ async function updateMany(req, res) {
 async function postProduct(req, res) {
     try {
         const data = req.body
+        const { role } = req.user
+
+        if (role === 'premium') {
+            data.owner = req.user._id
+        }
+
         const newProduct = await productService.post(data)
 
-        res.send({payload: newProduct})
+        res.send({ payload: newProduct })
     } catch (error) {
         console.error(error)
     }
@@ -50,9 +56,19 @@ async function postProduct(req, res) {
 async function deleteProduct(req, res) {
     try {
         const productId = req.params.pid
+        const { role, _id } = req.user
+
+        if (role === 'premium') {
+            const product = await productService.getById(productId)
+
+            if (_id === product.owner) {
+                const deleteProduct = await productService.delete(productId)
+                return res.send({ payload: deleteProduct })
+            }
+        }
         const deleteProduct = await productService.delete(productId)
 
-        res.send({payload: deleteProduct})
+        res.send({ payload: deleteProduct })
     } catch (error) {
         console.error(error)
     }

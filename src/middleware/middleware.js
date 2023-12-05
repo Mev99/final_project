@@ -49,6 +49,7 @@ async function checkNotAuthenticated(req, res, next) {
     }
 }
 
+// * VERIFIES EXPIRATION DATE OF THE TOKEN
 export async function verifyToken(req, res, next) {
     const queryToken = req.params.token
     const userTokenData = await restorePassService.getByToken(queryToken)
@@ -63,10 +64,28 @@ export async function verifyToken(req, res, next) {
     }
 }
 
+// * CHECKS IF PREMIUM USER ADDS HIS OWN ITEM TO CART
+async function checkPremiumAddToCart(req, res, next) {
+    try {
+        const { role, _id } = req.user
+        if (role === premium) {
+            const {pid} = req.params
+            const product = await productService.getById(pid)
+            if (product.owner === _id) {
+                return res.send('cannot add your own product to the cart')
+            }
+        }
+        next()
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 export default {
     authorizationAdmin,
     authorizationUser,
     checkAuthenticated,
     checkNotAuthenticated,
-    verifyToken
+    verifyToken,
+    checkPremiumAddToCart
 }

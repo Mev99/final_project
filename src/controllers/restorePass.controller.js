@@ -34,9 +34,6 @@ async function sendEmail(req, res, next) {
 
 async function getRestore(req, res, next) {
     try {
-        //! ! ! ! ! ! !! PROBA EL REQ.SESSION
-        const test = req.session
-        console.log(test)
         res.render('restorePassword')
     } catch (error) {
         console.error(error)

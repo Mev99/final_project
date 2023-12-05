@@ -58,13 +58,13 @@ app.use(session({
     saveUninitialized: false,
 }))
 
-// PASSPORT
+// * PASSPORT
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
-//ROUTERS
+// * ROUTERS
 app.use('/user', userRouter)
 app.use('/products', productRouter)
 app.use('/cart', cartRouter)

@@ -111,6 +111,29 @@ async function getCurrent(req, res) {
     }
 }
 
+// * CHANGE ROLE FROM USER -> PREMIUM || PREMIUM -> USER
+async function changeRole(req, res) {
+    try {
+        const { uid } = req.params
+        const user = await userService.getById(uid)
+        if (user.role === user) {
+            const test = await userService.put(uid, {role: premium})
+            return res.send({test})
+        }
+        
+        if (user.role === premium) {
+            const test2 = await userService.put(uid, {role: user})
+            return res.send({test2})
+        }
+
+        if (user.role === admin) {
+            return res.send("that's an admin")
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 export default {
     getAllUsers,
     getUser,
@@ -122,5 +145,7 @@ export default {
     postLogin,
     
     getRegister,
-    postRegister
+    postRegister,
+
+    changeRole
 }

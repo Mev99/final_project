@@ -34,8 +34,20 @@ export default class User {
         return updateUser
     }
 
+//     put = async (userId, newUserInfo) => {
+//         let findUser = await userModel.find({ _id: userId })
+//         if (findUser === null) {
+//             return res.send("user's ID not found")
+//         }
+//         let updateUser = await userModel.findOneAndUpdate({ _id: userId }, { $set: newUserInfo })
+
+//         return updateUser
+//     }
+
     delete = async (userId) => {
         let deleteUser = await userModel.deleteOne({ _id: userId })
         return deleteUser
     }
+
+    
 }

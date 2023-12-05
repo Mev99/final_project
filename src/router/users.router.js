@@ -32,7 +32,7 @@ userRouter.get('/', auth.authorizationAdmin,
 // * UPDATE USER
 userRouter.put("/:uid", auth.authorizationAdmin,
     userController.putUser)
-    
+
 // * DELETE USER
 userRouter.delete("/:uid", auth.authorizationAdmin,
     userController.deleteUser)
@@ -41,4 +41,8 @@ userRouter.delete("/:uid", auth.authorizationAdmin,
 userRouter.get("/current", auth.checkAuthenticated,
     userController.getCurrent)
 
+// * CHANGES USER'S ROLE FROM PREMIUM TO USER AND VICEVERSA
+userRouter.post("/premium/:uid", auth.checkAuthenticated,
+    userController.changeRole)
+    
 export default userRouter

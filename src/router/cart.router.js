@@ -12,11 +12,11 @@ cartRouter.get('/', auth.checkAuthenticated, auth.authorizationUser,
     cartController.getCart)
 
 // * ADD PRODUCTS TO CART
-cartRouter.put('/add_product/:pid', auth.authorizationUser,
+cartRouter.put('/add_product/:pid', auth.authorizationUser, auth.checkPremiumAddToCart,
     cartController.addProductToCart)
 
 // * UPDATE QUANTITY OF 'X' PRODUCT
-cartRouter.put('/:cid/product/:pid', auth.authorizationUser,
+cartRouter.put('/:cid/product/:pid', auth.authorizationUser, auth.checkPremiumAddToCart,
     cartController.putProductQuantity)
 
 // * DELETE STUFF FROM CART

@@ -23,9 +23,9 @@ export default class ProductRepository {
         }
     }
 
-    put = async (queryId, data) => {
+    put = async (uid, data) => {
         try {
-            let update = await this.dao.put(queryId, data)
+            let update = await this.dao.put(uid, data)
             return update
         } catch (error) {
             console.error(error)

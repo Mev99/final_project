@@ -11,8 +11,13 @@ const productRouter = Router()
 productRouter.get("/:limit?/:page?/:sort?/:query?",
     productController.getProducts)
 
+// ! Modificar las query de '.getproducts' para poder hacer un getById.
+// productRouter.get("byId/:pid", 
+//     productController.getById)
+
 // * ADMIN ONLY update product
-productRouter.put('/', auth.checkAuthenticated, auth.authorizationAdmin,
+productRouter.put('/:pid', auth.checkAuthenticated, 
+//  auth.authorizationAdmin,
     productController.updateMany)
 
 // * ADMIN ONLY create product

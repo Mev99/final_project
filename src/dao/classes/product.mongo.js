@@ -20,9 +20,9 @@ export default class Products {
         }
     }
     
-    put = async (queryId, data) => {
+    put = async (uid, data) => {
         try {
-            let update = await productModel.updateMany(queryId, data)
+            let update = await productModel.updateMany({_id: uid}, {$set: data})
             return update
         } catch (error) {
             console.error(error)

@@ -1,3 +1,4 @@
+import ProductDto from "../dao/DTOs/product.dto.js"
 import { productService } from "../repository/app.js"
 // import Products from "../dao/classes/product.mongo.js"
 // const productService = new Products()
@@ -10,24 +11,39 @@ async function getProducts(req, res) {
         let queryUrl = req.query || null
 
         const findProducts = await productService.get(queryUrl, limitParam, pageParam, sortParam)
-
-        console.log(findProducts)
-
-        // res.send({ payload: findProducts})
-        res.render('products', { findProducts })
+        const products = findProducts.docs
+    
+        // const filteredProducts = products.map((p) => {
+        //     new ProductDto(p)
+        // })
+        
+        // res.render('products', {products})
+        res.send({products})
     } catch (error) {
         console.log(error)
     }
 
 }
 
+async function getById(req, res) {
+    try {
+        const { pid } = req.params
+        console.log('IDIDIDID')
+        const findProduct = await productService.getById(pid)
+
+        res.send(findProduct)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 // TODO: Make it so if stocks is added to a product that has none, the boolean changes to true
 async function updateMany(req, res) {
     try {
-        const queryId = req.body
+        const { pid } = req.params
         const data = req.body
 
-        const updateAll = await productService.put(queryId, data)
+        const updateAll = await productService.put(pid, data)
 
         res.send({ result: "success", payload: updateAll })
     } catch (error) {
@@ -74,4 +90,4 @@ async function deleteProduct(req, res) {
     }
 }
 
-export default { getProducts, updateMany, postProduct, deleteProduct }
+export default { getProducts, getById, updateMany, postProduct, deleteProduct }

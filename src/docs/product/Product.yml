@@ -1,0 +1,132 @@
+paths:
+  /products/:
+    get:
+      tags:
+        - products
+      summary: Obtains all products
+      description: Obtains all products, it has 4 different optional queries
+      parameters:
+        - name: limit
+          in: path
+          description: The ammount of products that are shown per page (10 is the default)
+          schema:
+            type: integer
+          required: false
+        - name: page
+          in: path
+          description: Page number
+          schema:
+            type: integer
+          required: false
+        - name: sort
+          in: path
+          description: sort by price with 0 and 1, default is 0, wich sorts lowest to highest
+          schema:
+            type: string
+          required: false
+        - name: query
+          in: query
+          description: Search query for getting something specific from the DB, e.g. => /products/?category=B
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: successful operation, render's products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: internal server error
+  /products/{pid}:
+    put:
+      tags:
+        - products
+      summary: Update product
+      description: 
+      parameters:
+        - name: pid
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            $type: String
+      responses:
+        '200':
+          description: successful operation values are changed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UpdateMany'
+        '500':
+          description: internal server error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/UpdateMany'
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+        product:
+          type: string
+        category:
+          type: string
+        price:
+          type: number
+        stock:
+          type: object
+        owner:
+          type: string
+      example:
+        _id: 64fc9648fab23db9ac795d58
+        product: ProductJ
+        category: B
+        price: 5
+        stock: 55,
+        image: ['image__productJ.jpg']
+    UpdateMany:
+      type: object
+      properties:
+        result:
+          type: string
+        payload:
+          type: object
+      example:
+        result: success
+        payload:
+          acknowledged: true
+          modifiedCount: 1
+          upsertedId: null
+          upsertedCount: 0
+          matchedCount: 1
+  requestBodies:
+    UpdateMany:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pid:
+                type: string
+                description: The ID of the product to be updated (from URL path)
+              newData:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: you specify what you need to change and make a key:value set '{"category":"U"}'
+          required:
+            - pid
+            - newData
+      description: Update product by ID request body

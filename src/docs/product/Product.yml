@@ -1,5 +1,5 @@
 paths:
-  /products/:
+  /products/{limit}/{page}/{sort}/{query}:
     get:
       tags:
         - products
@@ -8,25 +8,28 @@ paths:
       parameters:
         - name: limit
           in: path
-          description: The ammount of products that are shown per page (10 is the default)
+          description: The ammount of products that are shown per page
           schema:
             type: integer
+            default: 10
           required: false
         - name: page
           in: path
           description: Page number
           schema:
             type: integer
+            default: 1
           required: false
         - name: sort
           in: path
-          description: sort by price with 0 and 1, default is 0, wich sorts lowest to highest
+          description: Sort by price with asc and desc
           schema:
             type: string
+            default: asc
           required: false
-        - name: query
+        - name: category
           in: query
-          description: Search query for getting something specific from the DB, e.g. => /products/?category=B
+          description: Search query for sorting by category, e.g. => /products/?category=B
           schema:
             type: string
           required: false

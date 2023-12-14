@@ -15,8 +15,8 @@ paths:
                   $ref: '#/components/schemas/Cart'
         '500':
           description: internal server error
-  /cart/{pid}:
-    get:
+  /cart/add_product/{pid}:
+    put:
       tags:
         - cart
       summary: Add product to your cart

@@ -1,4 +1,5 @@
 import { restorePassService } from "../repository/app.js"
+import { productService } from "../repository/app.js"
 
 // * IF NOT ADMIN = 403
 async function authorizationAdmin(req, res, next) {
@@ -68,7 +69,7 @@ export async function verifyToken(req, res, next) {
 async function checkPremiumAddToCart(req, res, next) {
     try {
         const { role, _id } = req.user
-        if (role === premium) {
+        if (role === "premium") {
             const {pid} = req.params
             const product = await productService.getById(pid)
             if (product.owner === _id) {

@@ -15,15 +15,15 @@ paths:
                   $ref: '#/components/schemas/Cart'
         '500':
           description: internal server error
-  /cart/{cid}:
+  /cart/{pid}:
     get:
       tags:
         - cart
-      summary: Get cart by id
+      summary: Add product to your cart
       parameters:
-        - name: cid
+        - name: pid
           in: path
-          description: ID of the cart
+          description: product ID
           required: true
           schema:
             $type: String

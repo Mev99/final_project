@@ -71,6 +71,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/requestBodies/UpdateMany'
+            examples:
+              example1:
+                summary: Example Request Body
+                value:
+                  price: "95"
 components:
   schemas:
     Product:

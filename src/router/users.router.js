@@ -8,6 +8,14 @@ import auth from '../middleware/middleware.js'
 const userRouter = Router()
 
 
+// * USER PASSPORT REGISTER
+userRouter.get('/register', auth.checkNotAuthenticated, userController.getRegister)
+
+userRouter.post("/register", auth.checkNotAuthenticated, passport.authenticate("register", {
+    failureRedirect: "/user/register",
+    successRedirect: "/user/login"
+}))
+
 // * USER PASSPORT LOGIN
 userRouter.get('/login', auth.checkNotAuthenticated,
     userController.getLogin)
@@ -15,15 +23,7 @@ userRouter.get('/login', auth.checkNotAuthenticated,
 userRouter.post("/login", auth.checkNotAuthenticated, passport.authenticate("login", {
     failureRedirect: "/user/login",
     successRedirect: "/user/current"
-}), userController.postLogin)
-
-// * USER PASSPORT REGISTER
-userRouter.get('/register', auth.checkNotAuthenticated, userController.getRegister)
-
-userRouter.post("/register", auth.checkNotAuthenticated, passport.authenticate("register", {
-    failureRedirect: "/user/register",
-    successRedirect: "/user/login"
-}), userController.postRegister)
+}))
 
 // * USER routes ADMIN ONLY
 userRouter.get('/', auth.authorizationAdmin,

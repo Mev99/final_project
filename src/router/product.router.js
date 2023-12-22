@@ -15,17 +15,16 @@ productRouter.get("/:limit?/:page?/:sort?/:query?",
 // productRouter.get("byId/:pid", 
 //     productController.getById)
 
-// * ADMIN ONLY update product
-productRouter.put('/:pid', auth.checkAuthenticated, 
-//  auth.authorizationAdmin,
+// * ADMIN & PREMIUM update product
+productRouter.put('/:pid', auth.checkAuthenticated, auth.authorizationAdminAndPremium,
     productController.updateMany)
 
-// * ADMIN ONLY create product
-productRouter.post('/', auth.checkAuthenticated, auth.authorizationAdmin,
+// * ADMIN & PREMIUM create product
+productRouter.post('/', auth.checkAuthenticated, auth.authorizationAdminAndPremium,
     productController.postProduct)
 
-// * ADMIN ONLY delete product
-productRouter.delete('/:pid', auth.checkAuthenticated, auth.authorizationAdmin,
+// * ADMIN & PREMIUM delete product
+productRouter.delete('/:pid', auth.checkAuthenticated, auth.authorizationAdminAndPremium,
     productController.deleteProduct)
 
 export default productRouter

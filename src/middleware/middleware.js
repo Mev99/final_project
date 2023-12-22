@@ -4,10 +4,25 @@ import { productService } from "../repository/app.js"
 // * IF NOT ADMIN = 403
 async function authorizationAdmin(req, res, next) {
     try {
-        if (req.user.role === 'user') {
+        if (req.user.role === 'user' || req.user.role === 'premium') {
             return res.status(403).render('forbidden')
         }
         next()
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function authorizationAdminAndPremium(req, res, next) {
+    try {
+        if (req.user.role === 'user') {
+            return res.status(403).render('forbidden')
+        }
+        if (req.user.role === 'admin' || req.user.role === 'premium') {
+            req.isPremium = req.user.role === 'premium'
+            return next()
+        }
+
     } catch (error) {
         console.error(error)
     }
@@ -17,7 +32,6 @@ async function authorizationAdmin(req, res, next) {
 async function authorizationUser(req, res, next) {
     try {
         if (req.user.role === 'admin') {
-            console.log(req.user.role)
             return res.status(403).render('forbidden')
         }
         next()
@@ -70,7 +84,7 @@ async function checkPremiumAddToCart(req, res, next) {
     try {
         const { role, _id } = req.user
         if (role === "premium") {
-            const {pid} = req.params
+            const { pid } = req.params
             const product = await productService.getById(pid)
             if (product.owner === _id) {
                 return res.send('cannot add your own product to the cart')
@@ -79,11 +93,12 @@ async function checkPremiumAddToCart(req, res, next) {
         next()
     } catch (error) {
         console.error(error)
-    }
+    }
 }
 
 export default {
     authorizationAdmin,
+    authorizationAdminAndPremium,
     authorizationUser,
     checkAuthenticated,
     checkNotAuthenticated,

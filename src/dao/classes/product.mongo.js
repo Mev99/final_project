@@ -40,7 +40,7 @@ export default class Products {
 
     delete = async (productId) => {
         try {
-            let deleteProduct = await productModel.deleteOne(productId)
+            let deleteProduct = await productModel.deleteOne({_id: productId})
             return deleteProduct
         } catch (error) {
             console.error(error)

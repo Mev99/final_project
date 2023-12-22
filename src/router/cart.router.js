@@ -20,7 +20,7 @@ cartRouter.put('/:cid/product/:pid', auth.authorizationUser, auth.checkPremiumAd
     cartController.putProductQuantity)
 
 // * DELETE STUFF FROM CART
-cartRouter.delete('/:cid/products/:pid', auth.authorizationUser,
+cartRouter.delete('/product/:pid', auth.authorizationUser,
     cartController.deleteProductFromCart)
 
 // * DELETE ALL 
@@ -31,4 +31,6 @@ cartRouter.delete('/:cid', auth.authorizationUser,
 cartRouter.get('/purchase', auth.checkAuthenticated, auth.authorizationUser,
     purchaseController.purchase, purchaseController.ticketCreation, purchaseController.nodemail)
 
+    //! DELETE THIS
+// cartRouter.delete('/delete/many', cartController.delMany)
 export default cartRouter

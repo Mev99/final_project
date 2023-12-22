@@ -12,13 +12,13 @@ async function getProducts(req, res) {
 
         const findProducts = await productService.get(queryUrl, limitParam, pageParam, sortParam)
         const products = findProducts.docs
-    
+
         // const filteredProducts = products.map((p) => {
         //     new ProductDto(p)
         // })
-        
+
         // res.render('products', {products})
-        res.send({products})
+        res.send({ products })
     } catch (error) {
         console.log(error)
     }
@@ -28,7 +28,6 @@ async function getProducts(req, res) {
 async function getById(req, res) {
     try {
         const { pid } = req.params
-        console.log('IDIDIDID')
         const findProduct = await productService.getById(pid)
 
         res.send(findProduct)
@@ -37,7 +36,7 @@ async function getById(req, res) {
     }
 }
 
-// TODO: Make it so if stocks is added to a product that has none, the boolean changes to true
+
 async function updateMany(req, res) {
     try {
         const { pid } = req.params
@@ -55,15 +54,15 @@ async function updateMany(req, res) {
 async function postProduct(req, res) {
     try {
         const data = req.body
-        const { role } = req.user
 
-        if (role === 'premium') {
-            data.owner = req.user._id
+        if (req.isPremium) {
+            data.owner = req.user.email
         }
 
         const newProduct = await productService.post(data)
 
         res.send({ payload: newProduct })
+
     } catch (error) {
         console.error(error)
     }
@@ -73,17 +72,20 @@ async function deleteProduct(req, res) {
     try {
         const productId = req.params.pid
         const { role, _id } = req.user
-
+        
         if (role === 'premium') {
             const product = await productService.getById(productId)
 
             if (_id === product.owner) {
                 const deleteProduct = await productService.delete(productId)
                 return res.send({ payload: deleteProduct })
+            } else {
+                return res.render('forbidden')
             }
         }
-        const deleteProduct = await productService.delete(productId)
 
+        const deleteProduct = await productService.delete(productId)
+        
         res.send({ payload: deleteProduct })
     } catch (error) {
         console.error(error)

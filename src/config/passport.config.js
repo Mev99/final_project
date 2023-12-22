@@ -12,10 +12,9 @@ const initializePassport = () => {
         new localStrategy(
             { passReqToCallback: true, usernameField: "email" },
             async (req, username, password, done) => {
-                const { first_name, last_name, email, age } = req.body;
+                const { first_name, last_name, email, age, role } = req.body;
                 try {
                     let user = await UserModel.findOne({ email: username });
-                    let createCart = await CartModel.create({})
                     if (user) {
                         console.log("El usuario ya existe");
                         return done(null, false);
@@ -26,6 +25,7 @@ const initializePassport = () => {
                         return done(null, false);
                     }
 
+                    let createCart = await CartModel.create({})
                     const newUser = {
                         first_name,
                         last_name,
@@ -37,7 +37,7 @@ const initializePassport = () => {
                             token: "A",
                             expirationTime: 1
                         },
-                        role: "user"    
+                        role: role || "user"    
                     };
                     let result = await UserModel.create(newUser);
                     return done(null, result);
@@ -70,7 +70,7 @@ const initializePassport = () => {
                 console.log('password does not check')
                 return done(null, false);
             }
-
+            
             return done(null, user);
 
         } catch (error) {

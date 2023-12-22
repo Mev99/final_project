@@ -1,4 +1,6 @@
 import Cart from "../dao/classes/cart.mongo.js"
+import cartModel from "../dao/models/cart.model.js"
+import productModel from "../dao/models/product.model.js"
 const cartService = new Cart()
 
 async function getCart(req, res) {
@@ -15,9 +17,7 @@ async function getCart(req, res) {
 async function addProductToCart(req, res) {
     try {
         const cartId = req.user.cart
-
         const productId = req.params.pid    
-        
         const quantityDesired = req.body | 1
 
         const addProduct = await cartService.put(cartId, productId, quantityDesired)
@@ -44,11 +44,11 @@ async function putProductQuantity(req, res) {
 }
 
 async function deleteProductFromCart(req, res) {
-    const cartId = req.params.cid
+    const cartId = req.user.cart
     const productId = req.params.pid
     try {
         const updateCart = await cartService.deleteProduct(cartId, productId)
-
+    
         res.send({ payload: updateCart })
     } catch (error) {
         console.error(error)
@@ -66,10 +66,22 @@ async function deleteAllProductsFromCart(req, res) {
     }
 }
 
+//! DELETE THIS
+// async function delMany(req,res) {
+//     try {
+//         const rikiti = await productModel.deleteMany({product: "prAAAAAAAAAAAJ"})
+//         console.log(rikiti)
+//         res.send(rikiti)
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
 export default {
     getCart,
     deleteProductFromCart,
     deleteAllProductsFromCart,
     addProductToCart,
     putProductQuantity
+    // delMany
 }

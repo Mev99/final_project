@@ -10,27 +10,27 @@ async function getLogin(req, res) {
     }
 }
 
-async function postLogin(req, res) {
-    try {
-        if (!req.session.passport.user) {
-            console.log('user', req.session.passport.user)
-            return res.status(400).send("User not found")
-        }
+// ! NOT BEING USED BECAUSE OF PASSPORT REDIRECT
+// async function postLogin(req, res) {
+//     try {
+//         if (!req.session.passport.user) {
+//             console.log('user', req.session.passport.user)
+//             return res.status(400).send("User not found")
+//         }
 
-        req.session.user = {
-            first_name: req.user.first_name,
-            last_name: req.user.last_name,
-            email: req.user.email,
-            age: req.user.age,
-            role: req.user.role
-        }
+//         req.session.user = {
+//             first_name: req.user.first_name,
+//             last_name: req.user.last_name,
+//             email: req.user.email,
+//             age: req.user.age,
+//             role: req.user.role
+//         }
 
-        res.send({status: 'success'})
-        // res.redirect('http://localhost:8080/user/current')
-    } catch (error) {
-        console.error(error)
-    }
-}
+//         res.send({status: 'success', payload: req.session.user})
+//     } catch (error) {
+//         console.error(error)
+//     }
+// }
 
 // *REGISTER
 async function getRegister(req, res) {
@@ -41,23 +41,22 @@ async function getRegister(req, res) {
     }
 }
 
-async function postRegister(req, res) {
-    try {
-        const { first_name, last_name, email, age, password } = req.body
-        console.log(req.body)
+// ! NOT BEING USED BECAUSE OF PASSPORT REDIRECT
+// async function postRegister(req, res) {
+//     try {
+//         const { first_name, last_name, email, age, password } = req.body
+//         console.log(_id)
 
-        if (!first_name || !last_name || !email || !age || !password) {
-            return res.status(400).send('missing information');
-        }
+//         if (!first_name || !last_name || !email || !age || !password) {
+//             return res.status(400).send('missing information');
+//         }
 
-
-        // res.write({payload: createUser})
-        // res.redirect("http://localhost:8080/user/login")
-        res.send({ status: "success" });
-    } catch (error) {
-        console.error(error)
-    }
-}
+//         // res.write({payload: createUser})
+//         res.send({ status: 'success', payload: _id});
+//     } catch (error) {
+//         console.error(error)
+//     }
+// }
 
 // *USER
 async function getAllUsers(req, res) {
@@ -142,10 +141,10 @@ export default {
     getCurrent,
 
     getLogin,
-    postLogin,
+    // postLogin,
     
     getRegister,
-    postRegister,
+    // postRegister,
 
     changeRole
 }

@@ -33,6 +33,7 @@ app.engine(
     })
 );
 
+// app.use(Express.static(`${__dirname}/public`))
 app.set("view engine", "handlebars")
 app.set("views", __dirname + '/views')
 app.use(Express.json())

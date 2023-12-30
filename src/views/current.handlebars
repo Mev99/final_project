@@ -3,4 +3,13 @@
 <p>{{email}}</p>
 <p>{{age}}</p>
 
+<h2>Become a premium user</h2>
+<form action="/user/documents" method="post" enctype="multipart/form-data">\
+    <label for="document">pick a file:</label>
+    <input type="file" id="document" name="document" required>
+    <button type="submit"></button>
+</form>
+
+<br>
+
 <a href="/restore">Restore password</a>

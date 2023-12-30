@@ -22,11 +22,11 @@ const userSchema = new Schema({
     },
     documents: [
         {
-          name: { type: String },
-          reference: { type: String }
+            name: { type: String },
+            reference: { type: String }
         }
-      ],
-      last_connection: {type: Date}
+    ],
+    last_seen: { type: Date }
 })
 
 userSchema.plugin(mongooseAutoPopulate)

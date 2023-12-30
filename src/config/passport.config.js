@@ -37,8 +37,9 @@ const initializePassport = () => {
                             token: "A",
                             expirationTime: 1
                         },
-                        role: role || "user"    
-                    };
+                        role: role || "user",
+                        last_seen: new Date()
+                    }
                     let result = await UserModel.create(newUser);
                     return done(null, result);
                 } catch (error) {
@@ -70,7 +71,11 @@ const initializePassport = () => {
                 console.log('password does not check')
                 return done(null, false);
             }
-            
+
+            //* updates last_seen
+            user.last_seen = new Date()
+            await user.save()
+
             return done(null, user);
 
         } catch (error) {

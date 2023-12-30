@@ -31,7 +31,7 @@ async function authorizationAdminAndPremium(req, res, next) {
 // * IF NOT USER = 403 
 async function authorizationUser(req, res, next) {
     try {
-        if (req.user.role === 'admin') {
+        if (req.user.role === 'admin' || req.user.role === 'premium') {
             return res.status(403).render('forbidden')
         }
         next()
@@ -100,8 +100,11 @@ export default {
     authorizationAdmin,
     authorizationAdminAndPremium,
     authorizationUser,
+
     checkAuthenticated,
     checkNotAuthenticated,
+
     verifyToken,
+    
     checkPremiumAddToCart
 }

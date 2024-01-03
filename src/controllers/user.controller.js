@@ -59,9 +59,21 @@ async function getRegister(req, res) {
 // }
 
 // *USER
+
+async function logout(req, res) {
+
+}
+
 async function getAllUsers(req, res) {
     try {
-        let users = await userService.get()
+        const users = await userService.get()
+
+        const test3 = new UserDto(users)
+
+        const test = users.map(e => {
+            new UserDto(e)
+        })
+
         res.send({ result: 'success', payload: users })
     } catch (error) {
         console.error(error)
@@ -116,9 +128,14 @@ async function changeRole(req, res) {
         const { uid } = req.params
         const user = await userService.getById(uid)
 
-        if (user[0].role === "user" && user[0].documents.length >= 3) {
-            const changeToPremium = await userService.put(uid, { role: "premium" })
-            return res.send({ changeToPremium })
+        if (user[0].role === "user") {
+            if (user[0].documents.length >= 3) {
+                const changeToPremium = await userService.put(uid, { role: "premium" })
+                return res.send({ changeToPremium })
+            } else {
+                return res.send({ error: 'in order to become a premium member you have to upload the files containing your information' })
+            }
+
         }
 
         if (user[0].role === "premium") {
@@ -127,10 +144,10 @@ async function changeRole(req, res) {
         }
 
         if (user[0].role === "admin") {
-            return res.send({nope: "that's an admin"})
+            return res.send({ nope: "that's an admin" })
         }
 
-        res.send({error: "user's role isn't user, premium nor admin"})
+        res.send({ error: "user's role isn't user, premium nor admin" })
     } catch (error) {
         console.error(error)
     }
@@ -167,6 +184,8 @@ export default {
 
     getLogin,
     // postLogin,
+
+    logout,
 
     getRegister,
     // postRegister,

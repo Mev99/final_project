@@ -26,6 +26,10 @@ userRouter.post("/login", auth.checkNotAuthenticated, passport.authenticate("log
     successRedirect: "/user/current"
 }))
 
+// * USER LOGOUT
+userRouter.post("/logout", auth.checkAuthenticated,
+    userController.logout)
+
 // * USER routes ADMIN ONLY
 userRouter.get('/', auth.checkAuthenticated, auth.authorizationAdmin,
     userController.getAllUsers)
@@ -43,7 +47,7 @@ userRouter.get("/current", auth.checkAuthenticated,
     userController.getCurrent)
 
 // * CHANGES USER'S ROLE FROM PREMIUM TO USER AND VICEVERSA
-userRouter.post("/premium/:uid", auth.checkAuthenticated, 
+userRouter.post("/premium/:uid", auth.checkAuthenticated,
     userController.changeRole)
 
 //* UPLOAD DOCUMENTS

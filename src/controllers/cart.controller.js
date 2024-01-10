@@ -7,8 +7,8 @@ async function getCart(req, res) {
     try {
         let cartId = req.user.cart
         let cart = await cartService.get(cartId)
-
-        res.send({ result: 'success', payload: { cart } })
+        let cartArray = cart[0].products
+        res.render('cart', cartArray)
     } catch (error) {
         console.error(error)
     }
@@ -65,17 +65,6 @@ async function deleteAllProductsFromCart(req, res) {
         console.error(error)
     }
 }
-
-//! DELETE THIS
-// async function delMany(req,res) {
-//     try {
-//         const rikiti = await productModel.deleteMany({product: "prAAAAAAAAAAAJ"})
-//         console.log(rikiti)
-//         res.send(rikiti)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
 
 export default {
     getCart,

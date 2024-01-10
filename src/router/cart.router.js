@@ -12,19 +12,19 @@ cartRouter.get('/', auth.checkAuthenticated, auth.authorizationUser,
     cartController.getCart)
 
 // * ADD PRODUCTS TO CART
-cartRouter.put('/add_product/:pid', auth.authorizationUser, auth.checkPremiumAddToCart,
+cartRouter.put('/add_product/:pid', auth.checkAuthenticated, auth.authorizationUser, auth.checkPremiumAddToCart,
     cartController.addProductToCart)
 
 // * UPDATE QUANTITY OF 'X' PRODUCT
-cartRouter.put('/:cid/product/:pid', auth.authorizationUser, auth.checkPremiumAddToCart,
+cartRouter.put('/:cid/product/:pid', auth.checkAuthenticated, auth.authorizationUser, auth.checkPremiumAddToCart,
     cartController.putProductQuantity)
 
 // * DELETE STUFF FROM CART
-cartRouter.delete('/product/:pid', auth.authorizationUser,
+cartRouter.delete('/product/:pid', auth.checkAuthenticated, auth.authorizationUser,
     cartController.deleteProductFromCart)
 
 // * DELETE ALL 
-cartRouter.delete('/:cid', auth.authorizationUser,
+cartRouter.delete('/:cid', auth.checkAuthenticated, auth.authorizationUser,
     cartController.deleteAllProductsFromCart)
 
 // * PURCHASE

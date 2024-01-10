@@ -62,7 +62,7 @@ async function postRestore(req, res, next) {
         //         return console.log('error logging out the session', error)
         //     }
         // })
-        // // !!!!!! CHEKEAR
+        // !!!!!! CHEKEAR
         // req.user.destroy((error) => {
         //     if (error) {
         //         return console.log('error destroying the session', error)

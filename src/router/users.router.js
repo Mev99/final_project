@@ -39,8 +39,11 @@ userRouter.put("/:uid", auth.checkAuthenticated, auth.authorizationAdmin,
     userController.putUser)
 
 // * DELETE USER
-userRouter.delete("/:uid", auth.checkAuthenticated, auth.authorizationAdmin,
-    userController.deleteUser)
+// userRouter.delete("/:uid", auth.checkAuthenticated, auth.authorizationAdmin,
+//     userController.deleteUser)
+
+userRouter.delete("/delete", auth.checkAuthenticated, auth.authorizationAdmin,
+    userController.deleteLastSeen)
 
 // * USER PROFILE
 userRouter.get("/current", auth.checkAuthenticated,

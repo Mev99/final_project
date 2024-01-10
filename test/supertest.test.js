@@ -27,7 +27,8 @@ describe('testing con supertest', () => {
         product: "test",
         category: "supertest",
         price: 1,
-        stock: 1,
+        stock: 15,
+        stock_available: true,
         image: "supertest_image.jpg"
     }
 

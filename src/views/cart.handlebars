@@ -1,0 +1,12 @@
+<ul>
+  <h3>Products in Cart:</h3>
+  {{#each cartArray}}
+    <li>
+      <h4>{{this.product}}</h4>
+      <p>Category: {{product.category}}</p>
+      <p>Price: ${{product.price}}</p>
+      <p>Stock: {{product.stock}}</p>
+      <p>Quantity: {{quantity}}</p>
+    </li>
+  {{/each}}
+</ul>

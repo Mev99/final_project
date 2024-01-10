@@ -67,14 +67,9 @@ async function logout(req, res) {
 async function getAllUsers(req, res) {
     try {
         const users = await userService.get()
+        const filteredUserData = users.map(user => new UserDto(user))
 
-        const test3 = new UserDto(users)
-
-        const test = users.map(e => {
-            new UserDto(e)
-        })
-
-        res.send({ result: 'success', payload: users })
+        res.send({ result: 'success', payload: filteredUserData })
     } catch (error) {
         console.error(error)
     }
@@ -113,6 +108,31 @@ async function deleteUser(req, res) {
     }
 }
 
+async function deleteLastSeen(req, res) {
+    try {
+        const users = await userService.get()
+        const currentDate = new Date()
+
+        const inactiveUsers = users.filter(user => {
+            const lastSeenDate = new Date(user.last_seen)
+            const timeDifference = (currentDate - lastSeenDate) / (1000 * 60)
+
+            return timeDifference >= 30
+        })
+
+
+        let deletedUsers = []
+
+        inactiveUsers.forEach(user => {
+            userService.delete(user._id)
+            deletedUsers.push(user._id)
+        })
+
+        res.send({ result: "inactive users deleted", deletedUsers })
+    } catch (error) {
+        console.error(error)
+    }
+}
 async function getCurrent(req, res) {
     try {
         const userDTO = new UserDto(req.user)
@@ -180,6 +200,7 @@ export default {
     getUser,
     putUser,
     deleteUser,
+    deleteLastSeen,
     getCurrent,
 
     getLogin,

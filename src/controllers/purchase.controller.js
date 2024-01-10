@@ -27,8 +27,8 @@ async function purchase(req, res, next) {
 
         // * Filtramos que productos tiene stock y cuales no
         const productsInCart = getCart.products
-        const productsWithStock = productsInCart.filter(item => item.product.stock.stock_available)
-        const productsWithoutStock = productsInCart.filter(item => !item.product.stock.stock_available)
+        const productsWithStock = productsInCart.filter(item => item.product.stock_available)
+        const productsWithoutStock = productsInCart.filter(item => !item.product.stock_available)
 
         // * Sumamos el precio de los que si hay stock
         const addPrice = productsWithStock.reduce((total, item) => {
@@ -36,8 +36,6 @@ async function purchase(req, res, next) {
             const productQuantity = item.quantity
             return total + productPrice * productQuantity
         }, 0)
-
-
 
         // * Iteramos sobre los que tienen stock para sacarles del stock la cantidad comprada, ademas de confirmar que haya suficiente stock para la cantidad solicitada, y luego actualizamos en la DB el stock
         if (productsWithStock.length !== 0) {
@@ -48,8 +46,8 @@ async function purchase(req, res, next) {
                     const quantityToPurchase = item.quantity
                     const getProduct = await productService.getById(productId)
 
-                    if (getProduct.stock.stock_ammount >= quantityToPurchase) {
-                        getProduct.stock.stock_ammount -= quantityToPurchase
+                    if (getProduct.stock >= quantityToPurchase) {
+                        getProduct.stock -= quantityToPurchase
 
                         const updateProductInDB = await productService.put({ _id: productId }, getProduct)
 
@@ -73,7 +71,6 @@ async function purchase(req, res, next) {
         } else {
             return res.status(400).send('No products with stock in your cart, sorry!')
         }
-
     } catch (error) {
         console.error(error)
     }

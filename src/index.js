@@ -11,7 +11,7 @@ import config from "./config/config.js"
 import initializePassport from "./config/passport.config.js";
 //SWAGGER
 import swaggerUiExpress from 'swagger-ui-express'
-import {specs} from './config/swagger.config.js'
+import { specs } from './config/swagger.config.js'
 //ROUTERs
 import userRouter from "./router/users.router.js"
 import productRouter from "./router/product.router.js";
@@ -24,6 +24,8 @@ const mongoURL = config.mongoUrl
 const PORT = config.port
 const secret = config.secret
 
+
+
 app.engine(
     "handlebars",
     engine({
@@ -31,7 +33,7 @@ app.engine(
         defaultLayout: false,
         layoutsDir: "views/layouts/"
     })
-);
+)
 
 // app.use(Express.static(`${__dirname}/public`))
 app.set("view engine", "handlebars")
@@ -76,4 +78,4 @@ app.use('/restore', restoreRouter)
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 // * APP LISTEN
-app.listen(PORT, () => {console.log(`at port: ${PORT}`)})
+app.listen(PORT, () => { console.log(`at port: ${PORT}`) })

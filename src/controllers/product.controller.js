@@ -1,5 +1,6 @@
 import ProductDto from "../dao/DTOs/product.dto.js"
 import { productService } from "../repository/app.js"
+import { transport } from "../config/nodemailer.config.js"
 // import Products from "../dao/classes/product.mongo.js"
 // const productService = new Products()
 
@@ -11,14 +12,12 @@ async function getProducts(req, res) {
         let queryUrl = req.query || null
 
         const findProducts = await productService.get(queryUrl, limitParam, pageParam, sortParam)
-        const products = findProducts.docs
+        const products = findProducts
 
-        // const filteredProducts = products.map((p) => {
-        //     new ProductDto(p)
-        // })
+        // console.log(products)
+        // res.render('products', products)
 
-        // res.render('products', {products})
-        res.send({ products })
+        res.send(products)
     } catch (error) {
         console.log(error)
     }
@@ -72,10 +71,17 @@ async function deleteProduct(req, res) {
     try {
         const productId = req.params.pid
         const { role, _id } = req.user
-        
-        if (role === 'premium') {
-            const product = await productService.getById(productId)
+        const product = await productService.getById(productId)
 
+        const mailOptions = {
+            from: 'matiasayesa99@gmail.com',
+            to: `${product.owner}`,
+            subject: `Product ${product.product}`,
+            text: `Your product has been deleted by one of our admins`
+        }
+
+
+        if (role === 'premium') {
             if (_id === product.owner) {
                 const deleteProduct = await productService.delete(productId)
                 return res.send({ payload: deleteProduct })
@@ -84,8 +90,11 @@ async function deleteProduct(req, res) {
             }
         }
 
+        if (product.owner !== admin) {
+            const send = await transport.sendMail(mailOptions)
+        }
         const deleteProduct = await productService.delete(productId)
-        
+
         res.send({ payload: deleteProduct })
     } catch (error) {
         console.error(error)

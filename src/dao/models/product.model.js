@@ -7,6 +7,7 @@ const productSchema = new Schema({
     category: String,
     price: Number,
     stock: Number,
+    stock_available: String,
     image: [Schema.Types.String],
     owner: {
         type: Schema.Types.String,
